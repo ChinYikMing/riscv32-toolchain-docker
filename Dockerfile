@@ -8,4 +8,4 @@ RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-gcc /opt/riscv32/bin/rv32gcc
 RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-objdump /opt/riscv32/bin/rv32objdump
 RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-gdb /opt/riscv32/bin/rv32gdb
 RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-readelf /opt/riscv32/bin/rv32readelf
-RUN export PATH="/opt/riscv32/bin:$PATH"
+RUN echo "PATH=\"/opt/riscv32/bin:$PATH\"" >> ~/.bashrc
