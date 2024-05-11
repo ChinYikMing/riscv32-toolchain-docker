@@ -8,4 +8,17 @@ RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-gcc /opt/riscv32/bin/rv32gcc
 RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-objdump /opt/riscv32/bin/rv32objdump
 RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-gdb /opt/riscv32/bin/rv32gdb
 RUN ln -s /opt/riscv32/bin/riscv32-unknown-elf-readelf /opt/riscv32/bin/rv32readelf
-RUN echo "PATH=\"/opt/riscv32/bin:$PATH\"" >> ~/.bashrc
+RUN echo "export PATH=\"/opt/riscv32/bin:$PATH\"" >> ~/.bashrc
+RUN cd -
+RUN cd -
+# Buildroot
+RUN apt-get install libncurses5-dev wget cpio unzip rsync ripgrep -y
+RUN git clone https://github.com/ChinYikMing/riscv32-toolchain-docker.git -b resources
+RUN git clone https://github.com/buildroot/buildroot.git --depth=1
+RUN cd buildroot && cp ../riscv32-toolchain-docker/buildroot.config .config && cp ../riscv32-toolchain-docker/busybox.config busybox.config && make olddefconfig && FORCE_UNSAFE_CONFIGURE=1 make && cd -
+RUN echo "export PATH=\"`pwd`buildroot/output/host/bin:$PATH\"" >> ~/.bashrc
+RUN echo "export CROSS_COMPILE=riscv32-buildroot-linux-gnu-" >> ~/.bashrc
+RUN echo "export ARCH=riscv" >> ~/.bashrc
+# Linux kernel
+RUN git clone https://github.com/torvalds/linux.git --depth=1
+RUN bash
